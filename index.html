@@ -49,6 +49,7 @@
             font-size: 0.9rem;
             opacity: 0.9;
         }
+
         nav {
             background: white;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -56,11 +57,40 @@
             top: 0;
             z-index: 100;
         }
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .nav-brand {
+            display: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #2c3e50;
+            padding: 0.8rem 1rem;
+        }
+        .menu-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            font-size: 1.6rem;
+            color: #2c3e50;
+            cursor: pointer;
+            padding: 0.8rem 1rem;
+            line-height: 1;
+        }
         .nav-links {
             display: flex;
             justify-content: center;
             list-style: none;
             padding: 0;
+            margin: 0;
+            width: 100%;
+        }
+        .nav-links li {
             margin: 0;
         }
         .nav-links li a {
@@ -70,11 +100,13 @@
             color: #2c3e50;
             font-weight: 600;
             transition: all 0.3s ease;
+            white-space: nowrap;
         }
         .nav-links li a:hover {
             color: #d32f2f;
             background-color: #fce4e4;
         }
+
         .judul {
             text-align: center;
             margin: 3rem 0 2.5rem 0;
@@ -142,6 +174,7 @@
             object-fit: cover;
             display: block;
         }
+
         .big-carousel-wrapper {
             width: 100%;
             margin-top: 1.5rem;
@@ -245,9 +278,52 @@
             opacity: 0.9;
             transform: translateY(-2px);
         }
+
         @media (max-width: 768px) {
+            #header {
+                padding: 2rem 1rem;
+            }
+            #header h1 {
+                font-size: 1.8rem;
+            }
+            .nav-container {
+                justify-content: space-between;
+            }
+            .nav-brand {
+                display: block;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: white;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                border-top: 1px solid #eee;
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .nav-links li {
+                width: 100%;
+                text-align: center;
+            }
+            .nav-links li a {
+                padding: 0.85rem 1rem;
+                border-bottom: 1px solid #f0f0f0;
+                font-size: 1rem;
+            }
             .card.project-card {
                 flex-direction: column;
+                padding: 1.25rem;
+            }
+            .card {
+                padding: 1.25rem;
             }
             .media-wrapper {
                 width: 100% !important;
@@ -271,13 +347,17 @@
     </div>
 
     <nav>
-        <ul class="nav-links">
-            <li><a href="#itsup">IT Support</a></li>
-            <li><a href="#website">Web & Writing</a></li>
-            <li><a href="#grafis">Graphic Design</a></li>
-            <li><a href="#kontak">Contact</a></li>
-			<li><a href="resume.html">Resume</a></li>
-        </ul>
+        <div class="nav-container">
+            <span class="nav-brand">Menu</span>
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#itsup" onclick="closeMenu()">IT Support</a></li>
+                <li><a href="#website" onclick="closeMenu()">Web & Writing</a></li>
+                <li><a href="#grafis" onclick="closeMenu()">Graphic Design</a></li>
+                <li><a href="#kontak" onclick="closeMenu()">Contact</a></li>
+                <li><a href="resume.html" onclick="closeMenu()">Resume</a></li>
+            </ul>
+        </div>
     </nav>
     
     <div class="container">
@@ -287,77 +367,66 @@
             <div class="media-wrapper">
                 <div class="media-container">
                     <div class="carousel-slides" id="storage-slides">
-                        <div class="carousel-slide"><img src="./src/storage1.jpg"></div>
-                        <div class="carousel-slide"><img src="./src/storage2.jpg"></div>
-						<div class="carousel-slide"><img src="./src/storage3.jpg"></div>
-                        <div class="carousel-slide"><img src="./src/storage4.jpg"></div>
-						<div class="carousel-slide"><img src="./src/storage5.jpg"></div>
+                        <div class="carousel-slide"><img src="./src/laptop1.webp" alt="Storage Upgrade Step 1"></div>
                     </div>
-                    <button class="carousel-btn prev-btn" onclick="moveManual('storage-slides', -1)">&#10094;</button>
-                    <button class="carousel-btn next-btn" onclick="moveManual('storage-slides', 1)">&#10095;</button>
                 </div>
             </div>
             <div class="card-content">
-                <h2>Storage Upgrade HP 245 G8</h2>
-                <p>User complains that 256GB storage isn't enough but doesn't want to change the original NVMe drive due to cost so 2nd best choice is using SATA drive which is cheaper than NVMe drive but faster than even super speed 7200rpm hard drive. Unfortunately it doesn't come with SATA cable or bracket. As a workaround, I've installed a new 256GB SATA drive using bracket and cable from HP 14s since both are compatible.</p>
-            </div>
-        </div>
-
-        <div class="card" id="youtube">
-            <h2>YouTube</h2>
-			<p>For additional projects, please visit my YouTube channel, <a href="https://www.youtube.com/@c0mand0r">Techtonime</a>. It serves as a hub for technical documentation, demonstrations to user, and an expanding knowledge base.</p>
-            <div class="youtube-grid">
-                <div class="video-container"><iframe width="560" height="315" src="https://www.youtube.com/embed/EaxbVAFRaUU?si=wnvPQwcYAXCl9fHD" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
-                <div class="video-container"><iframe src="https://www.youtube.com/embed/xbeChw9UhHo" allowfullscreen></iframe></div>
-                <div class="video-container"><iframe src="https://www.youtube.com/embed/FmpdN7DtidE" allowfullscreen></iframe></div>
+                <h2>HP 245 G8 Deployment and Upgrade</h2>
+                <p>HP made several business-class machine such as HP Probook and HP Pavilion. For lower end, they made HP 200 series laptop like HP 245 G8 with AMD Ryzen 3 5300U processor, 256GB of storage, and 4GB of memory. However, the default specifications were severely underpowered for modern multitasking under Windows 11. The single 4GB DDR4…</p>
+				<p><a href="https://charisalfan.github.io/laptop.html">Read More</a></p>
             </div>
         </div>
 		
 		<div class="card project-card">
             <div class="media-wrapper">
                 <div class="media-container">
-                    <div class="carousel-slides" id="memory-slides">
-                        <div class="carousel-slide"><img src="./src/memory1.jpg"></div>
-                        <div class="carousel-slide"><img src="./src/memory2.jpg"></div>
-						<div class="carousel-slide"><img src="./src/memory3.jpg"></div>
+                    <div class="carousel-slides" id="storage-slides">
+                        <div class="carousel-slide"><img src="./src/kemendesa.webp" alt="Storage Upgrade Step 1"></div>
                     </div>
-                    <button class="carousel-btn prev-btn" onclick="moveManual('memory-slides', -1)">&#10096;</button>
-                    <button class="carousel-btn next-btn" onclick="moveManual('memory-slides', 1)">&#10097;</button>
                 </div>
             </div>
             <div class="card-content">
-                <h2>Memory Upgrade HP 14S-AF118AU</h2>
-                <p>Since Windows 10 21H2 update, running 4GB of RAM in Windows isn't sufficient enough because Microsoft adds more feature that needs more memory. I upgrade this machine to 8GB by adding an SK Hynix 4GB SODIMM DDR3 memory. Sadly the motherboard of this particular laptop is maxed at 8GB but fortunately it's sufficient enough for Windows 10.</p>
+                <h2>Designing a Flexible & Cost Effective Teleconferencing Solution</h2>
+                <p>Our office has three workspaces that are also used for teleconference meetings with our partners and stakeholders. Room A, built in 2017 as a grant from the Norwegian government and managed jointly with the Kementerian Lingkungan Hidup dan Kehutanan, measures 20×8 meters. Room B was built simultaneously and also managed jointly with the Kementerian…</p>
+				<p><a href="https://charisalfan.github.io/telecon.html">Read More</a></p>
             </div>
         </div>
-
-        <!-- Website -->
+		
+		<!-- Webmaster -->
         <h2 class="judul" id="website">Website & Content Writer</h2>
-        <div class="card project-card">
+		
+		<div class="card project-card">
             <div class="media-wrapper">
                 <div class="media-container">
-                    <img src="./src/mobilmotorlama.jpg" alt="Mobilmotorlama">
+                    <div class="carousel-slides" id="storage-slides">
+                        <div class="carousel-slide"><img src="./src/simpen.webp" alt="Storage Upgrade Step 1"></div>
+                    </div>
                 </div>
             </div>
             <div class="card-content">
-                <h2>Mobilmotorlama</h2>
-                <p>Handled research, SEO writing, CSS themeing, and social media management for automotive digital content.</p>
+                <h2>Simpen Purworejo – Web GIS Using WordPress</h2>
+                <p>Dinas Pendidikan Purworejo needed a centralized Information System and GIS mapping dashboard to visualize school data as part of some project done previously. The goal was to give decision-makers actual, real-time geographic data to guide educational policy. Problem is, this is just an afterthought for survey/mapping project done earlier. High-power data visualization platforms like Metabase…</p>
+				<p><a href="https://charisalfan.github.io/website.html">Read More</a></p>
             </div>
         </div>
 		
 		<div class="card project-card">
             <div class="media-wrapper">
                 <div class="media-container">
-                    <img src="./src/simpen.jpg" alt="Simpen Purworejo">
+                    <div class="carousel-slides" id="storage-slides">
+                        <div class="carousel-slide"><img src="./src/mobilmotorlama.webp" alt="Storage Upgrade Step 1"></div>
+                    </div>
                 </div>
             </div>
             <div class="card-content">
-                <h2>SIMPEN Purworejo</h2>
-                <p>I converted about 1500 geographic data (name, latitude, longitude, description, etc.) into interactive map using Waymark plugin and Wordpress.</p>
+                <h2>MobilMotorLama – Managing Indonesian Automotive Website</h2>
+                <p>Mobilmotorlama initially was created as a hobby project in 2015. The topic is discussing vintage cars and motorcycles that once existed in Indonesia. As a hobby project, I served as the end to end publisher and technical lead (web admin, content strategist, photographer, and frontend tweaker). This site was built using the Blogger/Blogspot platform, and…</p>
+				<p><a href="https://charisalfan.github.io/mobilmotorlama.html">Read More</a></p>
             </div>
         </div>
-
-        <!-- Graphic Design with BIG Carousel -->
+		
+        <!-- Graphic Design -->
         <h2 class="judul" id="grafis">Graphic Design</h2>
         <div class="card">
             <div class="card-content">
@@ -386,6 +455,7 @@
             </div>
         </div>
 
+        <!-- Contact Section -->
         <h2 class="judul" id="kontak">Contact</h2>
         <div class="card">
             <div class="card-content contact-content">
@@ -420,6 +490,7 @@
 
         function moveManual(id, direction) {
             const container = document.getElementById(id);
+            if (!container) return;
             const total = container.children.length;
             if (!scrollStates[id]) scrollStates[id] = 0;
             
@@ -429,6 +500,22 @@
 
         // Auto-scroll for the big carousel
         setInterval(() => moveManual('grafis-slides', 1), 5000);
+
+        // Mobile Menu Navigation Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            menuToggle.innerHTML = navLinks.classList.contains('active') ? '✕' : '☰';
+        });
+
+        function closeMenu() {
+            if (window.innerWidth <= 768) {
+                navLinks.classList.remove('active');
+                menuToggle.innerHTML = '☰';
+            }
+        }
     </script>
 </body>
 </html>
