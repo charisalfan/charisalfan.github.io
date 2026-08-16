@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<meta name="referrer" content="strict-origin-when-cross-origin" />
+    <title>MobilMotorLama – Managing Indonesian Automotive Website</title>
+	<link rel="icon" type="image/png" href="./src/favico.png">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        #header {
+            background-color: #d32f2f;
+            color: white;
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+        #header h1 {
+            margin: 0;
+            color: white;
+            font-size: 2.5rem;
+        }
+        #header p {
+            color: #ffcdd2;
+            max-width: 800px;
+            margin: 1rem auto 0;
+        }
+        footer {
+            background-color: #d32f2f;
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            margin-top: auto;
+        }
+        footer p {
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        nav {
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .nav-brand {
+            display: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #2c3e50;
+            padding: 0.8rem 1rem;
+        }
+        .menu-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            font-size: 1.6rem;
+            color: #2c3e50;
+            cursor: pointer;
+            padding: 0.8rem 1rem;
+            line-height: 1;
+        }
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+        }
+        .nav-links li {
+            margin: 0;
+        }
+        .nav-links li a {
+            display: block;
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        .nav-links li a:hover {
+            color: #d32f2f;
+            background-color: #fce4e4;
+        }
+
+        .judul {
+            text-align: center;
+            margin: 3rem 0 2.5rem 0;
+            font-size: 2rem;
+            color: #2c3e50;
+            letter-spacing: 1px;
+        }
+        .container {
+            width: 95%;
+            max-width: 1100px;
+            margin: 0 auto 2rem auto;
+        }
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+        .card.project-card {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+        .youtube-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #000;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        .media-wrapper {
+            flex-shrink: 0;
+            width: 40%;
+        }
+        .card-content {
+            flex-grow: 1;
+        }
+        .media-container {
+            position: relative;
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #eee;
+            aspect-ratio: 16 / 9;
+        }
+        .media-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .big-carousel-wrapper {
+            width: 100%;
+            margin-top: 1.5rem;
+        }
+        .big-carousel-container {
+            position: relative;
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            background: #000;
+        }
+        .carousel-slides {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .carousel-slide {
+            min-width: 100%;
+            position: relative;
+        }
+        .carousel-slide img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 9; 
+            object-fit: cover;
+        }
+        .carousel-caption {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem;
+            text-align: center;
+            color: #2c3e50;
+            font-weight: 500;
+            border-top: 2px solid #d32f2f;
+        }
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: background 0.3s;
+        }
+        .carousel-btn:hover { background: #d32f2f; }
+        .prev-btn { left: 15px; }
+        .next-btn { right: 15px; }
+        .contact-content {
+            text-align: center;
+            padding: 1rem 0;
+        }
+        .contact-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .btn-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            min-width: 180px;
+        }
+        .btn-email {
+            background-color: #d32f2f;
+            color: white;
+            box-shadow: 0 4px 6px rgba(211, 47, 47, 0.2);
+        }
+        .btn-email:hover {
+            background-color: #b71c1c;
+            transform: translateY(-2px);
+        }
+        .btn-social {
+            background-color: #2c3e50;
+            color: white;
+        }
+        .btn-social:hover {
+            background-color: #1a252f;
+            transform: translateY(-2px);
+        }
+        .btn-insta {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: white;
+        }
+        .btn-insta:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            #header {
+                padding: 2rem 1rem;
+            }
+            #header h1 {
+                font-size: 1.8rem;
+            }
+            .nav-container {
+                justify-content: space-between;
+            }
+            .nav-brand {
+                display: block;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: white;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                border-top: 1px solid #eee;
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .nav-links li {
+                width: 100%;
+                text-align: center;
+            }
+            .nav-links li a {
+                padding: 0.85rem 1rem;
+                border-bottom: 1px solid #f0f0f0;
+                font-size: 1rem;
+            }
+            .card.project-card {
+                flex-direction: column;
+                padding: 1.25rem;
+            }
+            .card {
+                padding: 1.25rem;
+            }
+            .media-wrapper {
+                width: 100% !important;
+            }
+            .youtube-grid {
+                grid-template-columns: 1fr;
+            }
+            .carousel-slide img {
+                aspect-ratio: 16 / 9;
+            }
+            .btn-link {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1>Hi, I'm Charis Alfan Maulana</h1>
+        <p>Welcome to my portfolio, below you can explore some of my recent projects and skill demonstration. I'm currently seeking opportunities in these field.</p>
+    </div>
+
+    <nav>
+        <div class="nav-container">
+            <span class="nav-brand">Menu</span>
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="https://charisalfan.github.io/#itsup" onclick="closeMenu()">IT Support</a></li>
+                <li><a href="https://charisalfan.github.io/#website" onclick="closeMenu()">Web & Writing</a></li>
+                <li><a href="https://charisalfan.github.io/#grafis" onclick="closeMenu()">Graphic Design</a></li>
+                <li><a href="https://charisalfan.github.io/#kontak" onclick="closeMenu()">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <h2 class="judul">MobilMotorLama – Managing Indonesian Automotive Website</h2>
+
+        <div class="card">
+            <div class="card-content">
+                <p>Mobilmotorlama initially was created as a hobby project in 2015. The topic is discussing vintage cars and motorcycles that once existed in Indonesia. As a hobby project, I served as the end to end publisher and technical lead (web admin, content strategist, photographer, and frontend tweaker).</p>
+				<div class="media-container" style="margin: 1.5rem 0;">
+                    <img src="./src/mobilmotorlama.webp" alt="Screenshot Mobilmotorlama">
+                </div>
+                <p>This site was built using the Blogger/Blogspot platform, and then assigned a custom domain (.com). This was chosen because the Blogger platform is easier to modify with XML template customizations and is free, so I don’t have to worry about bandwidth, hosting, or other things. This reduced my workload and allowed me to focus solely on writing. To enhance my site professionalism, I assigned a .com domain and then a CNAME record pointed to Blogspot.</p>
+				<h2>Challenges</h2>
+				<p>Running a content heavy platform using a PaaS/No-code platform like Blogger has its own limitations, such as:</p>
+				<ul>
+				<li>Poor site performance and loading speed due to heavy reliance on external resources</li>
+				<li>Blogger’s default XML/HTML structure is less flexible for modern User Experience (UX) needs</li>
+				<li>Optimization by ensuring code structure and content adhere to Google Search Console standards</li>
+				</ul>
+				<h2>Solution</h2>
+				<h3>Front End Solution</h3>
+				<p>Even though I use Blogger’s infrastructure, I manually make changes to the code to improve the website’s functionality and aesthetics. I modify Blogger’s custom XML structure to add related posts, breadcrumb navigation, and more. This makes the website more responsive for mobile users and prevents high bounce rates with a well-designed navigation menu.</p>
+				<h3>Performance Optimalization</h3>
+				<p>To maintain reader comfort, site loading speed must be kept to a minimum. One step is to reduce image sizes, such as limiting image dimensions to 800×450 pixels and using a smaller webp extension. Currently, the site still uses images with a JPG extension with a resolution of 800×450 pixels because converting thousands of existing photos is quite time-consuming. Furthermore, the use of external JavaScript is minimized to a certain extent because Google AdSense, a revenue source, requires JavaScript, which significantly impacts site performance.</p>
+				<h3>Technical</h3>
+				<p>To showcase this site to the world, SEO (search engine optimization) techniques are required. I manage robots.txt to indicate to search engines what to index and what not to index, sitemaps, and other features to integrate with services like Google Search Console. Furthermore, I pay attention to writing format by implementing a heading hierarchy (H1, H2, H3), optimizing image alt text, and using a structured internal linking strategy between related articles.</p>
+				<h2>Current Condition</h2>
+				<p>After more than 10 years, Mobilmotorlama has faced several challenges, such as a shift in Indonesian interest toward audio visual content due to increasingly affordable internet costs. Not to mention the proliferation of AI chatbots, which are making people increasingly reluctant to visit websites to search for information.</p>
+				<p>As a result, Mobilmotorlama currently only receives around 2,000-3,000 daily visitors. However, this figure, based on raw pageviews on the Blogger dashboard, can differ significantly because raw pageviews also include bots, crawlers, and navigation between pages by the same user. Therefore, statistics from services like Google Search Console, which calculates total organic clicks purely from search engines (real user intent), better reflect the true situation. In Google Search Console, the average daily visitor count is only 300 to 500 visitors.</p>
+				<p>This is because the site is rarely updated due to busy schedules, which also reduces interaction with readers. This also impacts search rankings. Although many articles remain on the front page, their rankings have dropped to positions 6 and above, resulting in a relatively high click-to-view ratio. This also impacts updates to anticipate various Google search engine algorithm updates.</p>
+				<p>To address this, I’ve started converting some articles into video format and uploading them to YouTube. I’m also gradually updating older articles over 5 years old, as Google’s current algorithm favors newer or updated articles with additional internal links, improved wording, updated information, and more</p>				
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>last edited : August 2026</p>
+    </footer>
+
+    <script>
+        const scrollStates = {};
+
+        function moveManual(id, direction) {
+            const container = document.getElementById(id);
+            if (!container) return;
+            const total = container.children.length;
+            if (!scrollStates[id]) scrollStates[id] = 0;
+            
+            scrollStates[id] = (scrollStates[id] + direction + total) % total;
+            container.style.transform = `translateX(-${scrollStates[id] * 100}%)`;
+        }
+
+        // Auto-scroll for the big carousel
+        setInterval(() => moveManual('grafis-slides', 1), 5000);
+
+        // Mobile Menu Navigation Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            menuToggle.innerHTML = navLinks.classList.contains('active') ? '✕' : '☰';
+        });
+
+        function closeMenu() {
+            if (window.innerWidth <= 768) {
+                navLinks.classList.remove('active');
+                menuToggle.innerHTML = '☰';
+            }
+        }
+    </script>
+</body>
+</html>

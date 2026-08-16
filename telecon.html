@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<meta name="referrer" content="strict-origin-when-cross-origin" />
+    <title>Teleconferencing Solution</title>
+	<link rel="icon" type="image/png" href="./src/favico.png">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        #header {
+            background-color: #d32f2f;
+            color: white;
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+        #header h1 {
+            margin: 0;
+            color: white;
+            font-size: 2.5rem;
+        }
+        #header p {
+            color: #ffcdd2;
+            max-width: 800px;
+            margin: 1rem auto 0;
+        }
+        footer {
+            background-color: #d32f2f;
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            margin-top: auto;
+        }
+        footer p {
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        nav {
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .nav-brand {
+            display: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #2c3e50;
+            padding: 0.8rem 1rem;
+        }
+        .menu-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            font-size: 1.6rem;
+            color: #2c3e50;
+            cursor: pointer;
+            padding: 0.8rem 1rem;
+            line-height: 1;
+        }
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+        }
+        .nav-links li {
+            margin: 0;
+        }
+        .nav-links li a {
+            display: block;
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        .nav-links li a:hover {
+            color: #d32f2f;
+            background-color: #fce4e4;
+        }
+
+        .judul {
+            text-align: center;
+            margin: 3rem 0 2.5rem 0;
+            font-size: 2rem;
+            color: #2c3e50;
+            letter-spacing: 1px;
+        }
+        .container {
+            width: 95%;
+            max-width: 1100px;
+            margin: 0 auto 2rem auto;
+        }
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+        .card.project-card {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+        .youtube-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #000;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        .media-wrapper {
+            flex-shrink: 0;
+            width: 40%;
+        }
+        .card-content {
+            flex-grow: 1;
+        }
+        .media-container {
+            position: relative;
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #eee;
+            aspect-ratio: 16 / 9;
+        }
+        .media-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .big-carousel-wrapper {
+            width: 100%;
+            margin-top: 1.5rem;
+        }
+        .big-carousel-container {
+            position: relative;
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            background: #000;
+        }
+        .carousel-slides {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .carousel-slide {
+            min-width: 100%;
+            position: relative;
+        }
+        .carousel-slide img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 9; 
+            object-fit: cover;
+        }
+        .carousel-caption {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem;
+            text-align: center;
+            color: #2c3e50;
+            font-weight: 500;
+            border-top: 2px solid #d32f2f;
+        }
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: background 0.3s;
+        }
+        .carousel-btn:hover { background: #d32f2f; }
+        .prev-btn { left: 15px; }
+        .next-btn { right: 15px; }
+        .contact-content {
+            text-align: center;
+            padding: 1rem 0;
+        }
+        .contact-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .btn-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            min-width: 180px;
+        }
+        .btn-email {
+            background-color: #d32f2f;
+            color: white;
+            box-shadow: 0 4px 6px rgba(211, 47, 47, 0.2);
+        }
+        .btn-email:hover {
+            background-color: #b71c1c;
+            transform: translateY(-2px);
+        }
+        .btn-social {
+            background-color: #2c3e50;
+            color: white;
+        }
+        .btn-social:hover {
+            background-color: #1a252f;
+            transform: translateY(-2px);
+        }
+        .btn-insta {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: white;
+        }
+        .btn-insta:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            #header {
+                padding: 2rem 1rem;
+            }
+            #header h1 {
+                font-size: 1.8rem;
+            }
+            .nav-container {
+                justify-content: space-between;
+            }
+            .nav-brand {
+                display: block;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: white;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                border-top: 1px solid #eee;
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .nav-links li {
+                width: 100%;
+                text-align: center;
+            }
+            .nav-links li a {
+                padding: 0.85rem 1rem;
+                border-bottom: 1px solid #f0f0f0;
+                font-size: 1rem;
+            }
+            .card.project-card {
+                flex-direction: column;
+                padding: 1.25rem;
+            }
+            .card {
+                padding: 1.25rem;
+            }
+            .media-wrapper {
+                width: 100% !important;
+            }
+            .youtube-grid {
+                grid-template-columns: 1fr;
+            }
+            .carousel-slide img {
+                aspect-ratio: 16 / 9;
+            }
+            .btn-link {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1>Hi, I'm Charis Alfan Maulana</h1>
+        <p>Welcome to my portfolio, below you can explore some of my recent projects and skill demonstration. I'm currently seeking opportunities in these field.</p>
+    </div>
+
+    <nav>
+        <div class="nav-container">
+            <span class="nav-brand">Menu</span>
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="https://charisalfan.github.io/#itsup" onclick="closeMenu()">IT Support</a></li>
+                <li><a href="https://charisalfan.github.io/#website" onclick="closeMenu()">Web & Writing</a></li>
+                <li><a href="https://charisalfan.github.io/#grafis" onclick="closeMenu()">Graphic Design</a></li>
+                <li><a href="https://charisalfan.github.io/#kontak" onclick="closeMenu()">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <h2 class="judul">Designing a Flexible & Cost Effective Teleconferencing Solution</h2>
+
+        <div class="card">
+            <div class="card-content">
+                <p>Our office has three workspaces that are also used for teleconference meetings with our partners and stakeholders. Room A, built in 2017 as a grant from the Norwegian government and managed jointly with the Kementerian Lingkungan Hidup dan Kehutanan, measures 20×8 meters. Room B was built simultaneously and also managed jointly with the Kementerian Lingkungan Hidup dan Kehutanan, measures 8×8 meters. Room C, built in 2023 in collaboration with the Kementerian Desa, Daerah Tertinggal dan Transmigrasi, measures 6×8 meters.</p>
+				<p>All three have different facilities for teleconference activities. Room A uses the following setup:</p>
+				<ul>
+				<li>9 unbranded screens with Samsung panels controlled by also unbranded video wall controller</li>
+				<li>Yamaha RX V385 audio receiver</li>
+				<li>4 speakers and 1 Bose subwoofer</li>
+				<li>Acer Aspire AIO PC</li>
+				</ul>
+				<p>Room B only has a 24-inch Samsung monitor. Room C has a 65-inch Sharp Aquos smart TV. For the camera and microphone, I recommend purchasing a Logitech BCC950 Teleconference Camera, which functions as a webcam, speaker, and microphone. I purchased it in 2020 for 3 million rupiah. This camera is used for various activities, as the three rooms are rarely used simultaneously. Furthermore, this camera is often brought along for field activities that require teleconferencing.</p>
+				<div class="media-container" style="margin: 1.5rem 0;">
+                    <img src="./src/kemendesa.webp" alt="Ruang Meeting Kemendesa">
+                </div>
+                <h2>Challenges</h2>
+				<p>For rooms B and C, the Logitech BCC950 is more than adequate for teleconferencing, as the maximum number of participants is around 15. Unlike room A, additional equipment is needed to streamline teleconferencing. For example, the audio for Logitech BCC950 sometimes can’t capture the voice of a speaker at the other end of the room. Therefore, a separate microphone is required for the speaker at the other end. Similarly, the speakers are used with a sound system with a Yamaha audio receiver and Bose speakers already installed in the room. However, due to various reasons, we were unable to procure an audio mixer to connect the microphone to an audio receiver or computer. Therefore, we typically use large portable speakers connected to wireless microphones, hoping the sound can be clearly picked up by the Logitech BCC950 and heard by teleconference participants.</p>
+				<div class="media-container" style="margin: 1.5rem 0;">
+                    <img src="./src/snc.webp" alt="Ruang Meeting Siti Nurbaya Center">
+                </div>
+				<p>Because it was a grant from the Norwegian government, meeting room A was installed by a separate vendor, including the screen, audio, and supporting equipment. Unfortunately, there was no documentation or details regarding the equipment used. Therefore, in 2021, the video wall controller failed, which I suspected was due to heat given that the video wall controller was housed in a closed cabinet without adequate air circulation. The initial symptom of this failure was the screen turning off after a long teleconference. To address this, I performed maintenance by cleaning the fan. Since the video wall controller’s fan resembles a PC fan, I purchased a PC fan and installed it there. During operation, the cabinet door was also slightly opened to allow for better air circulation. When I was a computer operator, sitting close to the cabinet housing the video wall controller, the heat from the audio receiver and video wall controller was quite noticeable due to the lack of air conditioning directed in front of it.</p>
+				<p>Unfortunately, this unbranded video wall controller eventually broke down. Rather than repairing the equipment due to the lack of documentation or information, the decision was made to purchase a new video wall controller, which was proposed for the 2022 budget year. I was tasked with the purchase, and after careful consideration, I decided to purchase a Lexcorn video wall controller that supports 4K resolution and a 3×3 screen configuration for 5 million rupiah.</p>
+				<div class="media-container" style="margin: 1.5rem 0;">
+                    <img src="./src/videowall.webp" alt="Video Wall Controller">
+                </div>
+				<p>The result of this teleconference room configuration was that our main clients, both the Kementerian Lingkungan Hidup and the Kementerian Desa, Daerah Tertinggal dan Transmigrasi frequently visited our office for discussions while conducting teleconferences with the Jakarta office. After President Prabowo took office, these two ministries were split, but the Kementerian Desa and the Kementerian Transmigrasi still frequently visited and offered work for our study center.</p>				
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>last edited : August 2026</p>
+    </footer>
+
+    <script>
+        const scrollStates = {};
+
+        function moveManual(id, direction) {
+            const container = document.getElementById(id);
+            if (!container) return;
+            const total = container.children.length;
+            if (!scrollStates[id]) scrollStates[id] = 0;
+            
+            scrollStates[id] = (scrollStates[id] + direction + total) % total;
+            container.style.transform = `translateX(-${scrollStates[id] * 100}%)`;
+        }
+
+        // Auto-scroll for the big carousel
+        setInterval(() => moveManual('grafis-slides', 1), 5000);
+
+        // Mobile Menu Navigation Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            menuToggle.innerHTML = navLinks.classList.contains('active') ? '✕' : '☰';
+        });
+
+        function closeMenu() {
+            if (window.innerWidth <= 768) {
+                navLinks.classList.remove('active');
+                menuToggle.innerHTML = '☰';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<meta name="referrer" content="strict-origin-when-cross-origin" />
+    <title>Simpen Purworejo – Web GIS Using WordPress</title>
+	<link rel="icon" type="image/png" href="./src/favico.png">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        #header {
+            background-color: #d32f2f;
+            color: white;
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+        #header h1 {
+            margin: 0;
+            color: white;
+            font-size: 2.5rem;
+        }
+        #header p {
+            color: #ffcdd2;
+            max-width: 800px;
+            margin: 1rem auto 0;
+        }
+        footer {
+            background-color: #d32f2f;
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            margin-top: auto;
+        }
+        footer p {
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        nav {
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .nav-brand {
+            display: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #2c3e50;
+            padding: 0.8rem 1rem;
+        }
+        .menu-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            font-size: 1.6rem;
+            color: #2c3e50;
+            cursor: pointer;
+            padding: 0.8rem 1rem;
+            line-height: 1;
+        }
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+        }
+        .nav-links li {
+            margin: 0;
+        }
+        .nav-links li a {
+            display: block;
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        .nav-links li a:hover {
+            color: #d32f2f;
+            background-color: #fce4e4;
+        }
+
+        .judul {
+            text-align: center;
+            margin: 3rem 0 2.5rem 0;
+            font-size: 2rem;
+            color: #2c3e50;
+            letter-spacing: 1px;
+        }
+        .container {
+            width: 95%;
+            max-width: 1100px;
+            margin: 0 auto 2rem auto;
+        }
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+        .card.project-card {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+        .youtube-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #000;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        .media-wrapper {
+            flex-shrink: 0;
+            width: 40%;
+        }
+        .card-content {
+            flex-grow: 1;
+        }
+        .media-container {
+            position: relative;
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #eee;
+            aspect-ratio: 16 / 9;
+        }
+        .media-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .big-carousel-wrapper {
+            width: 100%;
+            margin-top: 1.5rem;
+        }
+        .big-carousel-container {
+            position: relative;
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            background: #000;
+        }
+        .carousel-slides {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .carousel-slide {
+            min-width: 100%;
+            position: relative;
+        }
+        .carousel-slide img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 9; 
+            object-fit: cover;
+        }
+        .carousel-caption {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem;
+            text-align: center;
+            color: #2c3e50;
+            font-weight: 500;
+            border-top: 2px solid #d32f2f;
+        }
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: background 0.3s;
+        }
+        .carousel-btn:hover { background: #d32f2f; }
+        .prev-btn { left: 15px; }
+        .next-btn { right: 15px; }
+        .contact-content {
+            text-align: center;
+            padding: 1rem 0;
+        }
+        .contact-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .btn-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            min-width: 180px;
+        }
+        .btn-email {
+            background-color: #d32f2f;
+            color: white;
+            box-shadow: 0 4px 6px rgba(211, 47, 47, 0.2);
+        }
+        .btn-email:hover {
+            background-color: #b71c1c;
+            transform: translateY(-2px);
+        }
+        .btn-social {
+            background-color: #2c3e50;
+            color: white;
+        }
+        .btn-social:hover {
+            background-color: #1a252f;
+            transform: translateY(-2px);
+        }
+        .btn-insta {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: white;
+        }
+        .btn-insta:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            #header {
+                padding: 2rem 1rem;
+            }
+            #header h1 {
+                font-size: 1.8rem;
+            }
+            .nav-container {
+                justify-content: space-between;
+            }
+            .nav-brand {
+                display: block;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: white;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                border-top: 1px solid #eee;
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .nav-links li {
+                width: 100%;
+                text-align: center;
+            }
+            .nav-links li a {
+                padding: 0.85rem 1rem;
+                border-bottom: 1px solid #f0f0f0;
+                font-size: 1rem;
+            }
+            .card.project-card {
+                flex-direction: column;
+                padding: 1.25rem;
+            }
+            .card {
+                padding: 1.25rem;
+            }
+            .media-wrapper {
+                width: 100% !important;
+            }
+            .youtube-grid {
+                grid-template-columns: 1fr;
+            }
+            .carousel-slide img {
+                aspect-ratio: 16 / 9;
+            }
+            .btn-link {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1>Hi, I'm Charis Alfan Maulana</h1>
+        <p>Welcome to my portfolio, below you can explore some of my recent projects and skill demonstration. I'm currently seeking opportunities in these field.</p>
+    </div>
+
+    <nav>
+        <div class="nav-container">
+            <span class="nav-brand">Menu</span>
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="https://charisalfan.github.io/#itsup" onclick="closeMenu()">IT Support</a></li>
+                <li><a href="https://charisalfan.github.io/#website" onclick="closeMenu()">Web & Writing</a></li>
+                <li><a href="https://charisalfan.github.io/#grafis" onclick="closeMenu()">Graphic Design</a></li>
+                <li><a href="https://charisalfan.github.io/#kontak" onclick="closeMenu()">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <h2 class="judul">Simpen Purworejo – Web GIS Using WordPress</h2>
+
+        <div class="card">
+            <div class="card-content">
+                <p>Dinas Pendidikan Purworejo needed a centralized Information System and GIS mapping dashboard to visualize school data as part of some project done previously. The goal was to give decision-makers actual, real-time geographic data to guide educational policy.</p>
+				<div class="media-container" style="margin: 1.5rem 0;">
+                    <img src="./src/simpen.webp" alt="Screenshot Simpen Purworejo">
+                </div>
+                <p>Problem is, this is just an afterthought for survey/mapping project done earlier. High-power data visualization platforms like Metabase or dedicated cloud servers (AWS/GCP) were financially out of the question since we can only afford basic shared hosting service. Also as afterthought, schedule were tight to satisfy requirement.</p>
+				<h2>The Goal</h2>
+				<p>My objective was to architect and deliver a fully functional, open source GIS mapping dashboard capable of running smoothly on low-end shared hosting, without relying on expensive software licenses or high maintenance server environments.</p>
+				<h2>Process and Decision</h2>
+				To bypass our severe server limitations, I had to think creatively using WordPress not just as a blogging platform, but as a lightweight, resource-optimized application framework.
+				<h3>WordPress as an Application Framework</h3>
+				<p>Instead of building a custom framework from scratch which would take too long, require more server resources and I don’t posessed required skill without AI help, I leveraged WordPress. It allowed us to keeping the development fast and open-source licensing free of conflicts.</p>
+				<h3>Lightweight Mapping with Waymark & Leaflet</h3>
+				<p>Since we couldn’t host a heavy GIS server, I implemented Waymark, a lightweight WordPress mapping plugin built on top of Leaflet.js. This allowed us to render map overlays, custom markers, and school location shapes on the client-side (the browser) using Javascript, rather than putting heavy processing stress on our cheap shared hosting server. This is important since we had over 1000 school information to display.</p>
+				<div class="media-container" style="margin: 1.5rem 0;">
+                    <img src="./src/dashboard.webp" alt="Dashboard Simpen Purworejo">
+                </div>
+				<h2>Result</h2>
+				<p>We successfully built and launched SIMPEN Purworejo on time.</p>
+				<ol>
+				<li>Bupati of Purworejo was highly impressed with the interactive map and visual data dashboard.</li>
+				<li>As a working Proof of Concept (PoC) within their tiny initial budget, we proved the system’s value. As a direct result, the department approved budget for next year to expand this project further and upgrade to better infrastructure owned by Dinas Komunikasi dan Informatika Kabupaten Purworejo.</li>
+				</ol>
+				<h2>What If We Got More Funding</h2>
+                <p>While the heavy plugin architecture initially loaded slowly on shared hosting, it served as the perfect MVP (Minimum Viable Product) to prove the system’s value and secure a larger budget. This successfully paved the way for Phase 2: migrating to a VPS hosting and implementing a decoupled analytics engine using Metabase. Below is our plan to do that.</p>
+				<p>Unlike shared hosting where we just put our CMS into a space in the server, VPS hosting basically means we rent a virtual computer in data center that can do more than just put some files into server. My plan is using containerization technology so if something happened in our Worpress instance, our Metabase, a business intelligence software isn’t affected. To do this, I am planning to use Docker which means starting by a yml file like this :</p>
+				<div style="background: #1e1e1e; color: #d4d4d4; padding: 1rem 1.25rem; border-radius: 8px; font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; overflow-x: auto; font-size: 0.95rem; margin: 1.5rem 0;">
+				<pre style="margin: 0; white-space: pre-wrap; word-break: break-word;">
+				<code>
+version: '3.8'
+
+services:
+  db:
+    image: mariadb:10.11
+    container_name: wp_mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password_super_sec
+      MYSQL_DATABASE: wordpress_db
+      MYSQL_USER: wp_user
+      MYSQL_PASSWORD: wp_password_123
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app-network
+
+  wordpress:
+    image: wordpress:latest
+    container_name: wp_app
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: wordpress_db
+      WORDPRESS_DB_USER: wp_user
+      WORDPRESS_DB_PASSWORD: wp_password_123
+    volumes:
+      - wp_data:/var/www/html
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+   metabase:
+    image: metabase/metabase:latest
+    container_name: metabase_app
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      MB_DB_TYPE: mysql
+      MB_DB_DBNAME: wordpress_db
+      MB_DB_PORT: 3306
+      MB_DB_USER: wp_user
+      MB_DB_PASS: wp_password_123
+      MB_DB_HOST: db
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+volumes:
+  db_data:
+  wp_data:
+
+networks:
+  app-network:
+    driver: bridge
+				</code>
+				</pre>
+                </div>
+				<p>The project utilizes a hybrid architecture combining WordPress and Metabase. WordPress serves as the frontend application and user access layer, leveraging its plugin ecosystem to handle authentication and page structuring. To address the WordPress limitation on dashboard reporting, Metabase is integrated as the dedicated backend Business Intelligence platform to handle raw database queries, data aggregation, and interactive chart rendering.</p>
+				<h2>Tech Stack</h2>
+				<p>To simulate this idea, I run it into my daily used laptop. A Lenovo Thinkpad X230i with dual core Core i3-3210M processor, 120GB SATA SSD, 6GB DDR3L RAM. This laptop is running Fedora Workstation 44 and since security concern and simplicity, I use Podman that use rootless system instead of Docker. There, I just run the yml file above to download and run al needed software before I configure it. In the real scenario, I think VPS hosting with 2 core CPU and 1GB of VRAM is enough for our current situation.</p>
+				<p>WordPress is still used as content management system for press release, public anouncement, and managing more multimedia content. The only difference is there are no make shift dashboard and web GIS made with Waymark plugin.</p>
+				<p>Metabase is an open-source business intelligence (BI) and data visualization tool. I chose Metabase Open Source Edition over similar Microsoft Power BI since it gave us the same level of interactive filtering, SQL-based querying, and beautiful GIS map rendering with zero licensing fees. We could host it ourselves, keeping data private and costs predictable.</p>
+				<h2>Result</h2>               
+                <div class="media-container" style="margin: 1.5rem 0;">
+                    <img src="./src/metabase.webp" alt="Metabase Embeded into Wordpress">
+                </div>
+                <p>Because WordPress no longer has to load heavy mapping and database plugins, the front-end website loads almost instantly. Page load time has been reduced to about 80% compared to previous attempt. Unlike our make shift previous attempt, stakeholders now can dynamically filter school data by region, level, and resource availability in real-time as a true business intelligence software. Features that were impossible with the old plugin-based static maps.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>last edited : August 2026</p>
+    </footer>
+
+    <script>
+        const scrollStates = {};
+
+        function moveManual(id, direction) {
+            const container = document.getElementById(id);
+            if (!container) return;
+            const total = container.children.length;
+            if (!scrollStates[id]) scrollStates[id] = 0;
+            
+            scrollStates[id] = (scrollStates[id] + direction + total) % total;
+            container.style.transform = `translateX(-${scrollStates[id] * 100}%)`;
+        }
+
+        // Auto-scroll for the big carousel
+        setInterval(() => moveManual('grafis-slides', 1), 5000);
+
+        // Mobile Menu Navigation Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            menuToggle.innerHTML = navLinks.classList.contains('active') ? '✕' : '☰';
+        });
+
+        function closeMenu() {
+            if (window.innerWidth <= 768) {
+                navLinks.classList.remove('active');
+                menuToggle.innerHTML = '☰';
+            }
+        }
+    </script>
+</body>
+</html>
